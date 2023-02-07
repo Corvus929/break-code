@@ -11,7 +11,8 @@ const overBtn = document.getElementById('second');
 // Pegs by row
 let board;
 let guessNum;
-let secretNum = [];
+let secretCue = [];
+let selections;
 
 // Cached variables
 // Win/loss message
@@ -19,21 +20,43 @@ let msgW = "Congrats! Start new game";
 let msgL = "Start new game";
 
 // Functions 
-// Create random answer
 // Check/compare guess against answer
 // Check if guess number is = max number of guesses
 //update board
-secretNum();
-function secretNum () {
-    while (secretNum.length < 6) {
-        let ran = Math.floor(Math.random() * 10);
+
+// Create random answer
+function secretNum() {
+    while (secretCue.length < 6) {
+        let ran = String(Math.floor(Math.random() * 10));
         if (ran <= 6) {
-            secretNum.push(ran);
+            secretCue.push(ran);
         }
     };
-    console.log(secretNum);
+console.log(secretCue);
 };
-     
+secretNum();
+
+render();
+
+function render() {
+board = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+]
+selections = [
+    [0, 0, 0],
+    [0, 0, 0]
+]
+}
 
 // Event listeners
 // Clear attempt on click
