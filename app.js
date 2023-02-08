@@ -1,7 +1,10 @@
-// Constants
+// summon from html
 const startBtn = document.getElementById('first');
 const overBtn = document.getElementById('second');
 let pegs = document.querySelectorAll('.peg');
+//rewrite msg display functions
+let msgW = document.querySelector('h2');
+let msgL = document.querySelector('h2');
 
 const choices = {
     '1': 'purple',
@@ -17,15 +20,16 @@ const choices = {
 // Guess number
 // Pegs by row
 let board = document.querySelectorAll('.board');
-let guessNum;
+let guessNum = 0;
 let attemptNum = 0;
 let secretCue = [];
 let selections;
+let out;
+let up;
+
 
 // Cached variables
 // Win/loss message
-let msgW = "Congrats! Start new game";
-let msgL = "Start new game";
 
 // Functions 
 // Check/compare guess against answer
@@ -43,9 +47,7 @@ function secretNum() {
 };
 
 secretNum();
-console.log(secretCue);
 
-//render board
 init();
 function init() {
     board = [
@@ -69,51 +71,75 @@ pegs.forEach((peg, i)=> { peg.setAttribute('name', i,)
     peg.style.backgroundColor = `${choices[selections[i]]}`}
 );
 };
-document.getElementById('markers').addEventListener('click', makeGuess);
+
+//render board
+
+pegs.forEach((peg)=> {peg.addEventListener('click', makeGuess)});
 
 function makeGuess(evt) {
     guessNum += 1;
-    if (guessNum > 4) {
+    
+    board.every((cell, row) => {
+        out = cell.findIndex((cel)=> {return cel === 0});
+        if (out !== -1) {
+          up = row;
+            return false;
+        };
+        return true;
+    });
+
+    board[up][out] = Object.keys(choices).find(key => choices[key] === evt.target.style.backgroundColor);
+    renderBoard();
+
+if (guessNum > 3) {
+        // compare();
         guessNum = 0;
         attemptNum += 1;
-    }
-console.log(attemptNum);
-    board.splice(attemptNum, guessNum, 1, evt.target);
-compare();
+    }}
+
+function renderBoard() {
+    board.forEach((cell, row) => {
+    cell.forEach((elem, col) => {
+        
+        document.getElementById(`c${col}r${row}`).style.backgroundColor = choices[elem];
+    });
+    });
 }
 
-function compare() {
-     if (secretCue === board[attemptNum]);
-}
-   
+// function compare() {
+//      if (secretCue === board[attemptNum]) {
+//         // print all green
+//         msgW.innerHTML = "Congrats! Start new game";
 
+//      }else if(/* board at this attempt number contains any of secretCue*/){
+//         if (/* if contained thing at index of attemptNum at guessNum === index of secretCue*/) {
+//         //print green there in results
+//         }else if(/* if contained thing at index of attemptNum at guessNum != index of secretCue */) {
+//         //print yellow
+//         } else if(/*guessNum != secretCue*/) {
+//             //print black
+//         }
+//     }else if (/*attemptnum contains != secretCue */) {
+//             //print black
+//         }
+//    if (attemptNum >= board.length) {
+//     //print msgL   
+//      msgL.innerHTML = "Start new game";
+
+//    }
+// }
 
 /*
-push clicked peg into board
-render based on board[][] array
-compare
+if new game is clicked
+    clear results
+    clear attempt num
+    clear guess num
+    set board to all 0s
+    make new random number
 */
-
 
 /*
-When peg is clicked copy value into next empty cell 
-every 4 cells compare row (guess) with secretCue
-display comparison
-if winner winnerText
-if not, keep playing on next row
-if no more cells then loserText
+if clear attempt is clicked
+    clear gusss num
+    set attemptnum array to 0s
 */
-
-
-
-/*
-clear attempt clear boardindex  
-start new game clear all indexs
-*/
-
-// Event listeners
-// Clear attempt on click
-// Start new game on click
-// Copy color of peg clicked to peg in row matching attempt number on click
-
-
