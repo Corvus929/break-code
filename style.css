@@ -9,59 +9,75 @@ body {
     display: grid;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    grid-template-columns: 2fr 3fr 1fr 2fr;
+    grid-template-columns: 2fr 3fr 2fr;
+    grid-template-rows: 1fr 1fr;
     column-gap: 5vh;
+    background-color: darkgrey;
 }
-/* 
-head {
-    font-size: 4vmin;
+
+h1 {
+    font-size: 5vmin;
     color: black;
-    justify-content: center;
-} */
+    align-content: center;
+    grid-column: 2;
+}
 
 .board {
     display: grid;
     grid-template-columns: repeat(4, 5vmin);
     grid-template-rows: repeat(11, 5vmin);
     gap: 1vh;
-    margin-top: 10vmin;
+    border: 10vmin;
     background-color: darkcyan;
+    justify-content: center;
+    grid-column: 2;
 }
 
 .board > div {
     display: grid;
     border-radius: 50%;
     justify-content: center;
-    align-items: center;    
+    align-items: center;        
     background-color: white;
-    /* border: 3vmin solid grey; */
-}
-    
-.buttons /* > .first .second */ {
-    display: grid;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 3;
-    grid-row-end: 8;
 }
 
+.buttons > #first {
+    display: grid;
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.buttons > #second {
+    display: grid;
+    grid-column: 1;
+    grid-row: 2;
+}
+ 
+/*
 head > h1 {
     display: grid;
     align-content: center;
     grid-column-start: 2;
     grid-column-end: 3;
-}
-
-/* #markers {
-    display: grid;
-    border-radius: 75%;
-    border: 3vmin solid grey;
-    background-color: white;
 } */
+
 #markers {
     display: grid;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    
+    grid-column: 2;
+    grid-row: 2;
+    background-color: darkblue;
+    grid-template-columns: repeat(3, 5vmin);
+    grid-template-rows: repeat(2, 5vmin);
+    justify-content: center;
+    align-content: center;
+  
+}
+
+#markers > div {
+    display: grid;
+    border-radius: 50%;
+    background-color: white;
+    justify-content: center;
+    gap: 1vh;
+    border: 10vmin;
 }
