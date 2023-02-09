@@ -16,6 +16,9 @@ const choices = {
     '6': 'lightblue',
 }
 
+const answers = ['white', 'green', 'yellow', 'black'];
+
+
 //global variables
 let guessNum = 0;
 let attemptNum = 0;
@@ -110,7 +113,7 @@ function renderBoard() {
 function renderResults() {
     results.forEach((cell, row) => {
         cell.forEach((key, col) => {       
-            document.getElementById(`b${col}r${row}`).style.backgroundColor = key; 
+            document.getElementById(`c${col}b${row}`).style.backgroundColor = answers[key]; 
         })
     });
 };
@@ -119,12 +122,12 @@ startBtn.addEventListener('click', startOver)
 function startOver() {
 init();
 renderBoard();
+renderResults();
 attemptNum = 0;
 guessNum = 0;
-secretNum();
+restore();
 };
 
-//only deletes first row?
 redoBtn.addEventListener('click', emptyAttempt);
 function emptyAttempt() {
 //clear gusss num
@@ -134,41 +137,41 @@ board[attemptNum] = [0, 0, 0, 0];
 renderBoard();
 }
 
-//all good until here except redo
-function compare() {
-    console.log(board[attemptNum]);
-    if (secretCue === board[attemptNum]) {
-        // print all green
-        renderResults();
-        key = 'green';
-        msg.innerText = "Congrats! Start new game";
-    // }else if(board[attemptNum][contains](secretCue.value)) {
-    // attemptNum    
-    }
-    //else if(board[].contains.anyValueOfsecretCue){   
-    
-        // board at this attempt number contains any of secretCue
-        /* if contained thing at index of attemptNum at guessNum === index of secretCue*/
-        //
-        // if () {
-        //print green there in results
-
-        //if contained thing at index of attemptNum at guessNum != index of secretCue 
-        // }else if() {
-        //print yellow
-
-        //secretCue !contains attemptNum.values
-        // } else if(attemptNum  !== secretCue) {
-            //print black
-        
-    // }
-    else if (attemptNum.contains(secretCue) = false) {
-            // print black
-            key = 'black';
-    }
-    if (attemptNum >= board.length) {
-    //print msgL
-        msg.innerHTML = "Start new game";
-
-   }
+function endGame() {
+    pegs.forEach((peg)=> {peg.removeEventListener('click', makeGuess)});
+    redoBtn.removeEventListener('click', emptyAttempt);
 };
+
+function restore() {
+    pegs.forEach((peg)=> {peg.addEventListener('click', makeGuess)});
+    redoBtn.addEventListener('click', emptyAttempt);
+    msg.innerHTML = "Mastermind";
+}
+
+function compare() {
+    if (attemptNum === board.length - 1) {
+        endGame();
+        msg.innerHTML = "Out of tries. Start new game";
+    }else if(results[attemptNum].every((cell) => results === 1)){
+        endGame();    
+        results[attemptNum][idx] = 1;
+        msg.innerHTM = "Congrats, you won. Press start new game"
+    }
+   board[attemptNum].forEach((cell, idx)=>{
+   if (secretCue[idx] === cell) {
+        //check/set for green
+    results[attemptNum][idx] = 1;
+
+    }else if(board[attemptNum].includes(secretCue.value)) {
+        results[attemptNum][idx] = 2;
+    
+    }else if(!board[attemptNum].includes(secretCue.value)) {
+        results[attemptNum][idx] = 3;
+    }
+   
+   });
+ renderResults();
+};
+
+//everygreen = winner
+//yellow
