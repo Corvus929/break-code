@@ -1,12 +1,13 @@
 // summon from html
 const startBtn = document.getElementById('first');
-const overBtn = document.getElementById('second');
+const redoBtn = document.getElementById('second');
 let pegs = document.querySelectorAll('.peg');
-//rewrite msg display functions
-let msgW = document.querySelector('h2');
-let msgL = document.querySelector('h2');
+let msg = document.querySelector('h1');
+let board = document.querySelectorAll('.board');
+let results = document.querySelectorAll('.reults');
 
 const choices = {
+    '0': 'white',
     '1': 'purple',
     '2': 'green',
     '3': 'pink',
@@ -15,42 +16,45 @@ const choices = {
     '6': 'lightblue',
 }
 
-// State variables 
-// Render board
-// Guess number
-// Pegs by row
-let board = document.querySelectorAll('.board');
+//global variables
 let guessNum = 0;
 let attemptNum = 0;
-let secretCue = [];
+let secretCue;
 let selections;
 let out;
 let up;
-
-
-// Cached variables
-// Win/loss message
+let key;
 
 // Functions 
-// Check/compare guess against answer
-// Check if guess number is = max number of guesses
-//update board
 
 // Create random answer
 function secretNum() {
+    secretCue = [];
     while (secretCue.length < 4) {
         let ran = String(Math.floor(Math.random() * 10));
-        if (ran <= 6) {
+        if (ran <= 6 && ran > 0) {
             secretCue.push(ran);
         }
     };
+    console.log(secretCue);
 };
-
-secretNum();
 
 init();
 function init() {
     board = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+    ]
+    results = [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
@@ -70,76 +74,101 @@ function init() {
 pegs.forEach((peg, i)=> { peg.setAttribute('name', i,)
     peg.style.backgroundColor = `${choices[selections[i]]}`}
 );
+secretNum();
 };
 
 //render board
-
 pegs.forEach((peg)=> {peg.addEventListener('click', makeGuess)});
 
 function makeGuess(evt) {
-    guessNum += 1;
-    
+    guessNum += 1;    
     board.every((cell, row) => {
         out = cell.findIndex((cel)=> {return cel === 0});
         if (out !== -1) {
-          up = row;
+            up = row;
             return false;
         };
         return true;
     });
-
     board[up][out] = Object.keys(choices).find(key => choices[key] === evt.target.style.backgroundColor);
     renderBoard();
-
-if (guessNum > 3) {
-        // compare();
+    if (guessNum > 3) {
+        compare();
         guessNum = 0;
         attemptNum += 1;
-    }}
+    }
+};
 
 function renderBoard() {
     board.forEach((cell, row) => {
-    cell.forEach((elem, col) => {
-        
-        document.getElementById(`c${col}r${row}`).style.backgroundColor = choices[elem];
+        cell.forEach((elem, col) => {       
+            document.getElementById(`c${col}r${row}`).style.backgroundColor = choices[String(elem)];
+        });
     });
+};
+
+function renderResults() {
+    results.forEach((cell, row) => {
+        cell.forEach((key, col) => {       
+            document.getElementById(`b${col}r${row}`).style.backgroundColor = key; 
+        })
     });
+};
+
+startBtn.addEventListener('click', startOver) 
+function startOver() {
+init();
+renderBoard();
+attemptNum = 0;
+guessNum = 0;
+secretNum();
+};
+
+//only deletes first row?
+redoBtn.addEventListener('click', emptyAttempt);
+function emptyAttempt() {
+//clear gusss num
+guessNum = 0;
+board[attemptNum] = [0, 0, 0, 0];
+//set attemptnum array to 0s
+renderBoard();
 }
 
-// function compare() {
-//      if (secretCue === board[attemptNum]) {
-//         // print all green
-//         msgW.innerHTML = "Congrats! Start new game";
+//all good until here except redo
+function compare() {
+    console.log(board[attemptNum]);
+    if (secretCue === board[attemptNum]) {
+        // print all green
+        renderResults();
+        key = 'green';
+        msg.innerText = "Congrats! Start new game";
+    // }else if(board[attemptNum][contains](secretCue.value)) {
+    // attemptNum    
+    }
+    //else if(board[].contains.anyValueOfsecretCue){   
+    
+        // board at this attempt number contains any of secretCue
+        /* if contained thing at index of attemptNum at guessNum === index of secretCue*/
+        //
+        // if () {
+        //print green there in results
 
-//      }else if(/* board at this attempt number contains any of secretCue*/){
-//         if (/* if contained thing at index of attemptNum at guessNum === index of secretCue*/) {
-//         //print green there in results
-//         }else if(/* if contained thing at index of attemptNum at guessNum != index of secretCue */) {
-//         //print yellow
-//         } else if(/*guessNum != secretCue*/) {
-//             //print black
-//         }
-//     }else if (/*attemptnum contains != secretCue */) {
-//             //print black
-//         }
-//    if (attemptNum >= board.length) {
-//     //print msgL   
-//      msgL.innerHTML = "Start new game";
+        //if contained thing at index of attemptNum at guessNum != index of secretCue 
+        // }else if() {
+        //print yellow
 
-//    }
-// }
+        //secretCue !contains attemptNum.values
+        // } else if(attemptNum  !== secretCue) {
+            //print black
+        
+    // }
+    else if (attemptNum.contains(secretCue) = false) {
+            // print black
+            key = 'black';
+    }
+    if (attemptNum >= board.length) {
+    //print msgL
+        msg.innerHTML = "Start new game";
 
-/*
-if new game is clicked
-    clear results
-    clear attempt num
-    clear guess num
-    set board to all 0s
-    make new random number
-*/
-
-/*
-if clear attempt is clicked
-    clear gusss num
-    set attemptnum array to 0s
-*/
+   }
+};
