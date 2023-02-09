@@ -39,7 +39,6 @@ function secretNum() {
             secretCue.push(ran);
         }
     };
-    console.log(secretCue);
 };
 
 init();
@@ -93,7 +92,8 @@ function makeGuess(evt) {
         };
         return true;
     });
-    board[up][out] = Object.keys(choices).find(key => choices[key] === evt.target.style.backgroundColor);
+    board[up][out] = Object.keys(choices).find(key => 
+        choices[key] === evt.target.style.backgroundColor);
     renderBoard();
     if (guessNum > 3) {
         compare();
@@ -105,7 +105,8 @@ function makeGuess(evt) {
 function renderBoard() {
     board.forEach((cell, row) => {
         cell.forEach((elem, col) => {       
-            document.getElementById(`c${col}r${row}`).style.backgroundColor = choices[String(elem)];
+            document.getElementById(`c${col}r${row}`).style.backgroundColor = 
+            choices[String(elem)];
         });
     });
 };
@@ -130,10 +131,8 @@ restore();
 
 redoBtn.addEventListener('click', emptyAttempt);
 function emptyAttempt() {
-//clear gusss num
 guessNum = 0;
 board[attemptNum] = [0, 0, 0, 0];
-//set attemptnum array to 0s
 renderBoard();
 }
 
@@ -152,26 +151,19 @@ function compare() {
     if (attemptNum === board.length - 1) {
         endGame();
         msg.innerHTML = "Out of tries. Start new game";
-    }else if(results[attemptNum].every((cell) => results === 1)){
-        endGame();    
-        results[attemptNum][idx] = 1;
-        msg.innerHTM = "Congrats, you won. Press start new game"
     }
-   board[attemptNum].forEach((cell, idx)=>{
-   if (secretCue[idx] === cell) {
-        //check/set for green
+    board[attemptNum].forEach((cell, idx)=>{
+    if (secretCue[idx] === cell) {
     results[attemptNum][idx] = 1;
-
-    }else if(board[attemptNum].includes(secretCue.value)) {
-        results[attemptNum][idx] = 2;
-    
-    }else if(!board[attemptNum].includes(secretCue.value)) {
+    }else if(secretCue.includes(cell)) {
+        results[attemptNum][idx] = 2;    
+    }else {
         results[attemptNum][idx] = 3;
     }
-   
    });
+    if(results[attemptNum].every((cell) => cell === 1)){
+        msg.innerHTML = "Congrats, you won. Press start new game";
+        endGame(); 
+    }
  renderResults();
 };
-
-//everygreen = winner
-//yellow
